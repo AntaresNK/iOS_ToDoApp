@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     let editTaskButton = UIButton()
     var tableView = UITableView()
     let defaults = UserDefaults.standard
-    let addTaskVC = AddTaskViewController()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,6 +99,7 @@ class ViewController: UIViewController {
     }
     
     @objc func addNewTask() {
+        let addTaskVC = AddTaskViewController()
         addTaskVC.modalPresentationStyle = .fullScreen
         present(addTaskVC, animated: true)
     }
@@ -177,6 +178,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        let addTaskVC = AddTaskViewController()
         addTaskVC.editTaskIndex = indexPath.row
         addTaskVC.isEditingTask = true
         addTaskVC.modalPresentationStyle = .fullScreen
