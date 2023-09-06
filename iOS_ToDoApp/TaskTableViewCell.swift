@@ -12,7 +12,11 @@ class TaskTableViewCell: UITableViewCell {
     var checkButton = UIButton()
     var titleLabel = UILabel()
     var descriptionLabel = UILabel()
-    var isEditingConstraints = false
+    var checkButtonLeadingConstraint: NSLayoutConstraint?
+    var titleLabelLeadingConstraint: NSLayoutConstraint?
+    var descriptionLabelLeadingConstraint: NSLayoutConstraint?
+    var isEditingConstraints: Bool = false
+    
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -49,35 +53,36 @@ class TaskTableViewCell: UITableViewCell {
     }
     
     func setupConstraints() {
+        
+        checkButtonLeadingConstraint?.isActive = false
+        titleLabelLeadingConstraint?.isActive = false
+        descriptionLabelLeadingConstraint?.isActive = false
+        
         if isEditingConstraints {
-            NSLayoutConstraint.activate([
-                checkButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 40),
-                checkButton.centerYAnchor.constraint(equalTo: centerYAnchor),
-                checkButton.widthAnchor.constraint(equalToConstant: 25),
-                checkButton.heightAnchor.constraint(equalToConstant: 25)
-            ])
+            checkButtonLeadingConstraint = checkButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 50)
+            titleLabelLeadingConstraint = titleLabel.leadingAnchor.constraint(equalTo: checkButton.trailingAnchor, constant: 15)
+            descriptionLabelLeadingConstraint = descriptionLabel.leadingAnchor.constraint(equalTo: checkButton.leadingAnchor, constant: 40)
         } else {
-            NSLayoutConstraint.activate([
-                checkButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-                checkButton.centerYAnchor.constraint(equalTo: centerYAnchor),
-                checkButton.widthAnchor.constraint(equalToConstant: 25),
-                checkButton.heightAnchor.constraint(equalToConstant: 25)
-            ])
+            checkButtonLeadingConstraint = checkButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10)
+            titleLabelLeadingConstraint = titleLabel.leadingAnchor.constraint(equalTo: checkButton.trailingAnchor, constant: 15)
+            descriptionLabelLeadingConstraint = descriptionLabel.leadingAnchor.constraint(equalTo: checkButton.leadingAnchor, constant: 40)
         }
-            
-            NSLayoutConstraint.activate([
-                titleLabel.leadingAnchor.constraint(equalTo: checkButton.trailingAnchor, constant: 15),
-                titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
-                titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0),
-                titleLabel.heightAnchor.constraint(equalToConstant: 40)
-            ])
-            
-            NSLayoutConstraint.activate([
-                descriptionLabel.leadingAnchor.constraint(equalTo: checkButton.leadingAnchor, constant: 40),
-                descriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
-                descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 0),
-                descriptionLabel.heightAnchor.constraint(equalToConstant: 15)
-            ])
-        }
+            checkButtonLeadingConstraint?.isActive = true
+            titleLabelLeadingConstraint?.isActive = true
+            descriptionLabelLeadingConstraint?.isActive = true
+        
+        NSLayoutConstraint.activate([
+            checkButton.centerYAnchor.constraint(equalTo: centerYAnchor),
+            checkButton.widthAnchor.constraint(equalToConstant: 25),
+            checkButton.heightAnchor.constraint(equalToConstant: 25),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0),
+            titleLabel.heightAnchor.constraint(equalToConstant: 40),
+            descriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 0),
+            descriptionLabel.heightAnchor.constraint(equalToConstant: 15)
+        ])
+    }
+
 }
 

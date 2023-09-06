@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     let editTaskButton = UIButton()
     var tableView = UITableView()
     let defaults = UserDefaults.standard
+    let addTaskVC = AddTaskViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -98,25 +99,32 @@ class ViewController: UIViewController {
     }
     
     @objc func addNewTask() {
-        let addTaskVC = AddTaskViewController()
         addTaskVC.modalPresentationStyle = .fullScreen
         present(addTaskVC, animated: true)
     }
     
     @objc func editButtonTouched() {
-        let cell = TaskTableViewCell()
         if tableView.isEditing {
             tableView.isEditing = false
-            cell.isEditingConstraints = false
+            for indexPath in tableView.indexPathsForVisibleRows ?? [] {
+                    if let cell = tableView.cellForRow(at: indexPath) as? TaskTableViewCell {
+                        cell.isEditingConstraints = tableView.isEditing
+                        cell.setupConstraints()
+                    }
+                }
             editTaskButton.setBackgroundImage(UIImage(systemName: "pencil.circle.fill"), for: .normal)
             newTaskButton.isHidden = false
-            tableView.reloadData()
+            
         } else {
             tableView.isEditing = true
-            cell.isEditingConstraints = true
+            for indexPath in tableView.indexPathsForVisibleRows ?? [] {
+                    if let cell = tableView.cellForRow(at: indexPath) as? TaskTableViewCell {
+                        cell.isEditingConstraints = tableView.isEditing
+                        cell.setupConstraints()
+                    }
+                }
             editTaskButton.setBackgroundImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
             newTaskButton.isHidden = true
-            tableView.reloadData()
         }
     }
     
@@ -169,7 +177,6 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-        let addTaskVC = AddTaskViewController()
         addTaskVC.editTaskIndex = indexPath.row
         addTaskVC.isEditingTask = true
         addTaskVC.modalPresentationStyle = .fullScreen
